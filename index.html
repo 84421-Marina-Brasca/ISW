@@ -593,11 +593,18 @@
                 const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
                 if (elementosCarrito.length === 0) {
                     // Mostrar el mensaje de error
+                    mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
                     mensajeError.classList.remove('d-none');
                     event.preventDefault(); // Evitar que el formulario se envíe si no hay elementos en el carrito
                 } else {
                     // Ocultar el mensaje de error si hay elementos en el carrito
                     mensajeError.classList.add('d-none');
+
+                    // Mostrar un mensaje de éxito
+                    const mensajeExito = document.createElement('div');
+                    mensajeExito.classList.add('alert', 'alert-success', 'mt-3');
+                    mensajeExito.textContent = 'Pedido realizado correctamente.';
+                    carritoLista.parentElement.appendChild(mensajeExito);
                 }
             });
         });
