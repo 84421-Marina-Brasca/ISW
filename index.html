@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+<button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" title="Popup title" data-bs-content="Popup content">Trigger</button>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -230,7 +230,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="cc-expiration">Mes de vencimiento</label>
-                                <select class="custom-select d-block w-100" id="cc-expiration" required>
+                                <select class="custom-select d-block w-100" id="cc-expiration" name="mes-venc" required>
                                     <option value="">Seleccione...</option>
                                     <option>01</option>
                                     <option>02</option>
@@ -251,7 +251,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="cc-expiration">Año de vencimiento</label>
-                                <select class="custom-select d-block w-100" id="cc-expiration" required>
+                                <select class="custom-select d-block w-100" id="cc-expiration" name="año-venc" required>
                                     <option value="">Seleccione...</option>
                                     <!-- for (var i = 1; i <= 64; i++) {
                                         var optionValue = i.toString().padStart(2, '0');  Agregamos ceros a la izquierda si es necesario
@@ -264,35 +264,35 @@
                                             <?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>
                                         </option>
                                     <?php } ?>} -->
-                                    <option>23</option>
-                                    <option>24</option>
-                                    <option>25</option>
-                                    <option>26</option>
-                                    <option>27</option>
-                                    <option>28</option>
-                                    <option>29</option>
-                                    <option>30</option>
-                                    <option>31</option>
-                                    <option>32</option>
-                                    <option>33</option>
-                                    <option>34</option>
-                                    <option>35</option>
-                                    <option>36</option>
-                                    <option>37</option>
-                                    <option>48</option>
-                                    <option>49</option>
-                                    <option>50</option>
-                                    <option>51</option>
-                                    <option>52</option>
-                                    <option>53</option>
-                                    <option>54</option>
-                                    <option>56</option>
-                                    <option>57</option>
-                                    <option>58</option>
-                                    <option>59</option>
-                                    <option>60</option>
-                                    <option>61</option>
-                                    <option>62</option>
+                                    <option>2023</option>
+                                    <option>2024</option>
+                                    <option>2025</option>
+                                    <option>2026</option>
+                                    <option>2027</option>
+                                    <option>2028</option>
+                                    <option>2029</option>
+                                    <option>2030</option>
+                                    <option>2031</option>
+                                    <option>2032</option>
+                                    <option>2033</option>
+                                    <option>2034</option>
+                                    <option>2035</option>
+                                    <option>2036</option>
+                                    <option>2037</option>
+                                    <option>2048</option>
+                                    <option>2049</option>
+                                    <option>2050</option>
+                                    <option>2051</option>
+                                    <option>2052</option>
+                                    <option>2053</option>
+                                    <option>2054</option>
+                                    <option>2056</option>
+                                    <option>2057</option>
+                                    <option>2058</option>
+                                    <option>2059</option>
+                                    <option>2060</option>
+                                    <option>2061</option>
+                                    <option>2062</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Este campo es obligatorio
@@ -424,6 +424,7 @@
                 }, false);
             })();
     </script>
+    
     <script>
         function validarSoloNumeros(idCampo, idMensajeError) {
             var campo = document.getElementById(idCampo);
@@ -518,15 +519,6 @@
         });
     </script>
 
-    <!-- inicialización del Datetimepicker que garantice que el DOM se haya cargado completamente -->
-
-    <script> // no lo uso
-        document.addEventListener('DOMContentLoaded', function () {
-
-            $('#datetimepicker1').datetimepicker();
-        });
-    </script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const formulario = document.querySelector('form');
@@ -584,18 +576,84 @@
         document.addEventListener('DOMContentLoaded', function () {
             const realizarPedidoBtn = document.getElementById('realizarPedido');
             const carritoLista = document.getElementById('carrito-lista');
+
             const mensajeError = document.createElement('div');
             mensajeError.classList.add('alert', 'alert-danger', 'mt-3', 'd-none');
             mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
             carritoLista.parentElement.appendChild(mensajeError);
 
+
             realizarPedidoBtn.addEventListener('click', function (event) {
-                const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
+
+            const direcion = document.getElementById('address');
+            const provincia = document.getElementById('country');
+            const ciudad = document.getElementById('state');
+            const cpa = document.getElementById('zip');
+            const radioEfectivo = document.getElementById('cash');
+            const radioTarjeta = document.getElementById('credit');
+            const txtEfectivo = document.getElementById('efectivo');
+            const txtNombre = document.getElementById('cc-name');
+            const tarjeta = document.getElementById('cc-number');
+            const cvv = document.getElementById('cc-cvv');
+            const cbMes = document.getElementsByName('mes-venc')[0];
+            const cbAño = document.getElementsByName('año-venc')[0];
+            const radioInmediato = document.getElementById('antesPosible');
+            const radioProgramada = document.getElementById('programado');
+            const fechaHoraInput = document.getElementById("fechaHora");
+            const total = document.getElementById('total');
+            const totalNumerico = parseFloat(total.textContent.replace('$', ''));
+
+
+            const mes_venc = cbMes.options[cbMes.selectedIndex].text;
+            const año_venc = cbAño.options[cbAño.selectedIndex].text;
+            const fechaActual = new Date()
+            const añoActual = fechaActual.getFullYear();
+            const mesActual = (String(fechaActual.getMonth() + 1).padStart(2, '0'));
+            const añoMesActual = new Date(añoActual+"-"+mesActual);
+            const añoMesVenc = new Date(año_venc+"-"+mes_venc)
+            
+            const fechaHoraSeleccionada = new Date(fechaHoraInput.value)
+            const fechaHoraMin = new Date();
+            fechaHoraMin.setHours(fechaHoraMin.getHours() + 1);
+            fechaHoraMin.setMinutes(fechaHoraMin.getMinutes() - 1);
+            const exprecionLogica = /^[0-9]+$/;
+            const fechaHoraMax = new Date();
+            fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
+
+
+            const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
+
                 if (elementosCarrito.length === 0) {
                     // Mostrar el mensaje de error
                     mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
                     mensajeError.classList.remove('d-none');
                     event.preventDefault(); // Evitar que el formulario se envíe si no hay elementos en el carrito
+
+                } else if(direcion.value == "") {
+                    
+                } else if(provincia.value === ""){
+
+                } else if(ciudad.value === ""){
+
+                } else if(cpa.value == "" || !exprecionLogica.test(cpa.value)){
+                    
+                } else if(radioEfectivo.checked && (!exprecionLogica.test(txtEfectivo.value) || txtEfectivo.value.trim() < 0 || txtEfectivo.value.trim() > 50000)){
+
+                } else if(radioTarjeta.checked && txtNombre.value == ""){ 
+                
+                } else if(radioTarjeta.checked && (tarjeta.value == "" ||!exprecionLogica.test(tarjeta.value) || tarjeta.value.length !== 16 || !tarjeta.value.startsWith("4"))){ 
+                
+                } else if(radioTarjeta.checked && (cvv.value == "" ||!exprecionLogica.test(cvv.value) || cvv.value.length !== 3 )){
+
+                } else if(radioTarjeta.checked && (cbMes.value === "" || cbAño.value === "" || añoMesVenc < añoMesActual)){
+
+                } else if(radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax)){     
+ 
+                } else if (totalNumerico > parseFloat(txtEfectivo.value)){
+                    // Mostrar el mensaje de error
+                    mensajeError.textContent = 'El monto ingresado es inferior al monto total';
+                    mensajeError.classList.remove('d-none');
+                    event.preventDefault();              
                 } else {
                     // Ocultar el mensaje de error si hay elementos en el carrito
                     mensajeError.classList.add('d-none');
@@ -610,63 +668,92 @@
         });
     </script>
 
+<script>
 
-    <!-- Validar que la fecha no sea inferior a la atual -->
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Obtener referencias a los elementos
+    
+    const fechaHoraInput = document.getElementById("fechaHora");
+    const errorMensaje = document.getElementById("error-mensaje-fecha");
+    const divFechaHora = document.getElementById("div-fecha-programada");
+    const cbProgramado = document.getElementById("programado");
+    const cbAntesPosible = document.getElementById("antesPosible");
+    const fechaHoraSeleccionada = new Date(fechaHoraInput.value);
 
-    <script>
-        // Obtener el elemento datetime-local y el elemento div para el mensaje de error
-        const fechaHoraInput = document.getElementById("fechaHora");
-        const errorMensaje = document.getElementById("error-mensaje-fecha");
-        const tect_box_fecha = document.getElementById("");
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Funciones
 
-        // Agregar un evento de escucha al elemento datetime-local
+    //Funcion para validar que no se este ingresando una fecha inferior o superior a la devida
+    function validarFechaYHora() {
 
-        fechaHoraInput.addEventListener("input", function () {
+        // Obtener la fecha y hora seleccionada por el usuario
+        const fechaHoraSeleccionada = new Date(fechaHoraInput.value);
 
-            // Obtener la fecha y hora seleccionada por el usuario
-            const fechaHoraSeleccionada = new Date(fechaHoraInput.value);
+        const fechaHoraMin = new Date();
+        fechaHoraMin.setHours(fechaHoraMin.getHours() + 1)
+        fechaHoraMin.setMinutes(fechaHoraMin.getMinutes() - 1)
 
-            // Obtener la fecha y hora actual
-            const fechaHoraActual = new Date();
+        const fechaHoraMax = new Date();
+        fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
 
-            // Comparar la fecha y hora seleccionada con la fecha y hora actual
-            if (fechaHoraSeleccionada < fechaHoraActual) {
-                // La fecha y hora seleccionadas son anteriores a la fecha y hora actual
-                errorMensaje.innerHTML = "La fecha y hora no pueden ser anteriores a la actual.";
-                fechaHoraInput.classList.add('is-invalid')
-            } else {
-                // Limpiar el mensaje de error si la fecha y hora son válidas
-                errorMensaje.innerHTML = "";
-                fechaHoraInput.classList.remove('is-invalid')
-            }
-        });
-    </script>
+        if (fechaHoraSeleccionada < fechaHoraMin) 
+        {
+            errorMensaje.innerHTML = "La fecha programada de entrega no puede inferior a 1 hora posteriores a la actual";
+            fechaHoraInput.classList.add('is-invalid')
+            return true
+        } else if (fechaHoraSeleccionada > fechaHoraMax) 
+        {
+            errorMensaje.innerHTML = "La fecha programada de entrega no puede superar a 7 dias posteriores a la actual";
+            fechaHoraInput.classList.add('is-invalid')
+            return true
+        } else 
+        {
+            errorMensaje.innerHTML = "";
+            fechaHoraInput.classList.remove('is-invalid')
+            return false
+        }
+    }
+
+    function asignarMinMaxFechas() {
+        const fechaMin = new Date()
+        const fechaMax = new Date()
+        fechaMin.setHours(fechaMin.getHours());
+        fechaMax.setDate(fechaMax.getDate() + 7);
+
+        console.log(fechaMin.toISOString())
+        console.log(fechaMax.toISOString())
+        fechaHoraInput.setAttribute("min", fechaMin.toISOString().slice(0, 16))
+        fechaHoraInput.setAttribute("max", fechaMax.toISOString().slice(0, 16))
+    }
 
 
-    <!-- Mostrar y ocultar campo de entrega programada -->
 
-    <script>
-        // Obtener referencias a los elementos
-        const divFechaHora = document.getElementById("div-fecha-programada");
-        const cbProgramado = document.getElementById("programado");
-        const cbAntesPosible = document.getElementById("antesPosible");
-        // Agregar un manejador de eventos para la casilla de verificación
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    // Eventos
 
-        cbProgramado.addEventListener("change", function () {
-            if (cbProgramado.checked) {
-                fechaHoraInput.value=""
+    //Asignar min y max al Detetime-local
+    //cbProgramado.addEventListener("change", asignarMinMaxFechas)
 
-                errorMensaje.innerHTML = "";
-                fechaHoraInput.classList.remove('is-invalid')
-                divFechaHora.style.display = "block"; // Mostrar el div si la casilla está marcada
-            }
-        });
-        cbAntesPosible.addEventListener("change", function() {
-            if (cbAntesPosible.checked) {
-                divFechaHora.style.display = "none"; // Oculta el div
-            }
-        });
-    </script>
+    // Mostrar y ocultar campo de entrega programada
+    cbProgramado.addEventListener("change", function () {
+        if (cbProgramado.checked) {
+            fechaHoraInput.value = ""
+            errorMensaje.innerHTML = "";
+            fechaHoraInput.classList.remove('is-invalid')
+            divFechaHora.style.display = "block";
+        }
+    });
+
+    cbAntesPosible.addEventListener("change", function () {
+        if (cbAntesPosible.checked) {
+            divFechaHora.style.display = "none"; // Oculta el div
+        }
+    });
+
+    // Validacion de fechas
+    fechaHoraInput.addEventListener("input", validarFechaYHora);
+
+</script>
 
 
 
