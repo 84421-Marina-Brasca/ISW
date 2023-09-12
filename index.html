@@ -37,7 +37,7 @@
             <div class="col-md-4 order-md-2 mb-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Tu Carrito</span>
-                    <span class="badge badge-secondary badge-pill">3</span>
+                    <span class="badge badge-secondary badge-pill" id="cantidadProductos">3</span>
                 </h4>
                 <ul class="list-group mb-3" id="carrito-lista">
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -78,7 +78,7 @@
                 <div class="total">
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total</span>
-                        <strong id="total">$5790</strong>
+                        <span  id="total">$5790</span>
                     </li>
                 </div>
 
@@ -497,25 +497,34 @@
 
 
     <script>
-        // Función para eliminar un elemento de la lista
-        function eliminarElemento(event) {
-            const listItem = event.target.closest('.list-group-item');
-            const importe = listItem.querySelector('.importe').textContent;
-            const total = document.getElementById('total');
+        document.addEventListener('DOMContentLoaded', function () {
+            const carritoLista = document.getElementById('carrito-lista');
+            const cantidadProductosSpan = document.querySelector('.badge-pill');
+            const totalSpan = document.getElementById('total');
 
-            // Eliminar el elemento de la lista
-            listItem.remove();
+            let cantidadProductos = 3;
 
-            // Actualizar el total restando el importe eliminado
-            const importeNumerico = parseFloat(importe.replace('$', '').trim());
-            const totalNumerico = parseFloat(total.textContent.replace('$', ''));
-            total.textContent = '$' + (totalNumerico - importeNumerico).toFixed(2);
-        }
+            // Agregar evento de clic a los botones de eliminación
+            const botonesEliminar = carritoLista.querySelectorAll('.eliminar');
+            botonesEliminar.forEach(function (boton) {
+                boton.addEventListener('click', function () {
+                    const elemento = boton.closest('li');
+                    const importeElemento = elemento.querySelector('.importe');
+                    const importeNumerico = parseFloat(importeElemento.textContent.replace('$', '').trim());
+                    // Resta el importe del producto eliminado al total actual
+                    const totalNumericoActual = parseFloat(totalSpan.textContent.replace('$', '').trim());
+                    const nuevoTotalNumerico = totalNumericoActual - importeNumerico;
 
-        // Agregar eventos de clic a los botones de eliminar
-        const botonesEliminar = document.querySelectorAll('.eliminar');
-        botonesEliminar.forEach((boton) => {
-            boton.addEventListener('click', eliminarElemento);
+                    // Actualiza el contenido del elemento "total" con el nuevo total
+                    totalSpan.textContent = '$' + nuevoTotalNumerico.toFixed(2);
+
+                    elemento.remove();
+                    cantidadProductos--;
+                    cantidadProductosSpan.textContent = cantidadProductos;
+                    actualizarCantidadProductos(); 
+                    actualizarTotal(); 
+                });
+            });
         });
     </script>
 
@@ -623,7 +632,7 @@
 
             const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
 
-                if (elementosCarrito.length === 0) {
+                if (elementosCarrito.length === 0 || totalNumerico === 0) {
                     // Mostrar el mensaje de error
                     mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
                     mensajeError.classList.remove('d-none');
