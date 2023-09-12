@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-<button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" title="Popup title" data-bs-content="Popup content">Trigger</button>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,6 +17,18 @@
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="pedido.css" />
+    
+    <style>
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('./fonts/static/Montserrat-Regular.ttf') format('ttf'), 
+                url('./fonts/static/Montserrat-Black.ttf') format('ttf'),
+        }
+    :root {
+            --bs-font-family-base: 'Montserrat', sans-serif;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -98,7 +109,7 @@
                     <div class="mb-3">
                         <label for="address">Calle</label>
                         <input type="text" class="form-control" id="address" placeholder="Avenida Colón 2509" required>
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" id="m-error-address">
                             Porfavor seleccione la dirección de envío.
                         </div>
                     </div>
@@ -111,7 +122,7 @@
                                 <option value="">Seleccione...</option>
                                 <option>Córdoba</option>
                             </select>
-                            <div class="invalid-feedback">
+                            <div class="invalid-feedback" id="m-error-country">
                                 Porfavor seleccione una provincia válida.
                             </div>
                         </div>
@@ -119,28 +130,29 @@
                             <label for="state">Ciudad</label>
                             <select class="custom-select d-block w-100" id="state" required>
                                 <option value="">Seleccione...</option>
-                                <option>Cosquin</option> 
+                                <option>Cosquin</option>
                                 <option>Mina Clavero</option>
                                 <option>Nono</option>
                                 <option>Santa Rosa de Calamuchita</option>
                                 <option>Villa Carlos Paz</option>
                                 <option>Villa General Belgrano</option>
                             </select>
-                            <div class="invalid-feedback">
+                            <div class="invalid-feedback" id="m-error-state">
                                 Porfavor seleccione una localidad.
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="zip">CPA</label>
-                            <input type="text" class="form-control" id="zip" placeholder="" required min="1" maxlength="4">
-                            <div id="mensajeErrorZip" style="color: red;"></div>
-                            <div class="invalid-feedback">
+                            <input type="text" class="form-control" id="zip" placeholder="" required min="1"
+                                maxlength="4">
+                            <div class="invalid-feedback" id="mensajeErrorZip">
                                 Ingrese un codigo postal.
                             </div>
                         </div>
-                        <div class="referen">
+                        <div class="mb-3">
                             <label for="referencia">Referencia (opcional)</label>
-                            <textarea type="text" id="referencia" name="referencia" rows="1" cols="20" maxlength="200"></textarea>
+                            <textarea type="text" class="form-control" id="referencia" name="referencia" rows="4"
+                                cols="20" maxlength="200"></textarea>
                             <div id="error-message" style="color: red;"></div>
                         </div>
                     </div>
@@ -178,9 +190,8 @@
 
                         <div id="payWithDiv" class="col-md-4 mb-3" style="display: block;">
                             <label for="efectivo">Efectivo con que abonará</label>
-                            <input type="text" class="form-control" id="efectivo" placeholder="" required  maxlength="5">
-                            <div id="mensajeErrorEfectivo" style="color: red;"></div>
-                            <div class="invalid-feedback">
+                            <input type="text" class="form-control" id="efectivo" placeholder="" required maxlength="5">
+                            <div class="invalid-feedback" id="mensajeErrorEfectivo">
                                 Este campo es obligatorio
                             </div>
                         </div>
@@ -195,13 +206,15 @@
                                 <option>1 cuota</option>
                             </select>
                         </div><br><br>
-                    
+
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label for="cc-name">Nombre y Apellido</label>
-                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                <input type="text" class="form-control" maxlength="200" id="cc-name" placeholder=""
+                                    onkeypress="return (event.charCode == 209 || event.charCode == 241 || event.charCode == 32 || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122))"
+                                    required>
                                 <small class="text-muted">Como figura en la tarjeta</small>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" id="m-error-cc-name">
                                     Este campo es obligatorio
                                 </div>
                             </div>
@@ -210,17 +223,17 @@
                         <div class="row">
                             <div class="col-md-8 mb-3">
                                 <label for="cc-number">Número de tarjeta</label>
-                                <input type="text" class="form-control" id="cc-number" placeholder="" required min="1" maxlength="16">
-                                <div id="mensajeErrorCc-number" style="color: red;"></div>
-                                <div class="invalid-feedback">
+                                <input type="text" class="form-control" id="cc-number" placeholder="" required min="1"
+                                    maxlength="16">
+                                <div class="invalid-feedback" id="mensajeErrorCc-number">
                                     Este campo es obligatorio
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="cc-expiration">Código de seguridad</label>
-                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required min="1" maxlength="3">
-                                <div id="mensajeErrorCc-cvv" style="color: red;"></div>
-                                <div class="invalid-feedback">
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required min="1"
+                                    maxlength="3">
+                                <div class="invalid-feedback" id="mensajeErrorCc-cvv">
                                     Este campo es obligatorio
                                 </div>
                             </div>
@@ -245,7 +258,7 @@
                                     <option>11</option>
                                     <option>12</option>
                                 </select>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" id="m-error-mes-venc">
                                     Este campo es obligatorio
                                 </div>
                             </div>
@@ -294,7 +307,7 @@
                                     <option>2061</option>
                                     <option>2062</option>
                                 </select>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" id="m-error-año-venc">
                                     Este campo es obligatorio
                                 </div>
 
@@ -310,7 +323,7 @@
                             <div class="d-block my-3">
 
 
-                                <div class="custom-control custom-radio">   
+                                <div class="custom-control custom-radio">
                                     <input id="antesPosible" name="recepcionPedido" type="radio" checked
                                         class="custom-control-input">
 
@@ -318,7 +331,8 @@
                                 </div>
 
                                 <div class="custom-control custom-radio">
-                                    <input id="programado" name="recepcionPedido" type="radio" class="custom-control-input">
+                                    <input id="programado" name="recepcionPedido" type="radio"
+                                        class="custom-control-input">
                                     <label class="custom-control-label" for="programado">Fecha programada</label>
                                 </div>
 
@@ -326,20 +340,19 @@
                         </div>
                     </div>
 
-
-                    <div id="div-fecha-programada" style="display: none;">
-                        <div class="row">
-                            <div class='col-sm-6'>
-                                <div class="form-group">
-
-                                    <input type='datetime-local' class="form-control" id="fechaHora" name="fechaHora"
-                                        class="form-control" required />
-
-                                    <div class="invalid-feedback d-block" id="error-mensaje-fecha"></div>
+                    <div class="mb-3">
+                        <div id="div-fecha-programada" style="display: none;">
+                            <div class="row">
+                                <div class='col-sm-6'>
+                                    <div class="form-group">
+                                        <input type='datetime-local' class="form-control" id="fechaHora" name="fechaHora" required />
+                                        <div class="invalid-feedback" id="error-mensaje-fecha">Por favor ingrese la fecha de entrega</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
 
                     <hr class="mb-4">
                     <button id="realizarPedido" class="btn btn-primary btn-lg btn-block" type="submit">Realizar
@@ -424,7 +437,7 @@
                 }, false);
             })();
     </script>
-    
+
     <script>
         function validarSoloNumeros(idCampo, idMensajeError) {
             var campo = document.getElementById(idCampo);
@@ -433,50 +446,86 @@
             campo.addEventListener("input", function () {
                 var valor = this.value;
                 if (!/^\d+$/.test(valor)) {
-                    mensajeError.textContent = "Ingrese solo números.";
+                    mensajeError.innerHTML = "Ingrese solo números.";
+                    mensajeError.classList.add("d-block")
                     campo.setCustomValidity("Ingrese solo números.");
-                } else {
-                    mensajeError.textContent = "";
+                } else if (valor.value = "") {
+                    mensajeError.classList.add("d-block")
+                    mensajeError.innerHTML = "Este campo es obligatorio";
+                    campo.setCustomValidity("Este campo es obligatorio");
+                }
+                else {
+                    mensajeError.classList.remove("d-block")
+                    mensajeError.innerHTML = "";
                     campo.setCustomValidity("");
-                } 
+                }
             });
         }
-        validarSoloNumeros("zip","mensajeErrorZip")
+        validarSoloNumeros("zip", "mensajeErrorZip")
         validarSoloNumeros("cc-number", "mensajeErrorCc-number")
-        validarSoloNumeros("cc-cvv","mensajeErrorCc-cvv");
-    </script>  
+        validarSoloNumeros("cc-cvv", "mensajeErrorCc-cvv");
+    </script>
 
     <script>
         var efectivoInput = document.getElementById("efectivo");
         var mensajeErrorEfectivo = document.getElementById("mensajeErrorEfectivo");
 
-        efectivoInput.addEventListener("input", function() {
+        efectivoInput.addEventListener("input", function () {
             var valorEfectivo = this.value.trim(); // Elimina espacios en blanco
             var esNumero = /^[0-9]+$/.test(valorEfectivo); // Verifica si es un número
 
             if (!esNumero || valorEfectivo < 0 || valorEfectivo > 50000) {
-                mensajeErrorEfectivo.textContent = "Ingrese un numero mayor a 0 y menor o igual a 50.000";
+                efectivoInput.setCustomValidity("Ingrese un numero mayor a 0 y menor o igual a 50.000")
+                mensajeErrorEfectivo.innerHTML = "Ingrese un numero mayor a 0 y menor o igual a 50.000";
+            } else if (efectivoInput.value == "") {
+                efectivoInput.setCustomValidity("Este campo es obligatorio")
+                mensajeErrorEfectivo.innerHTML = "Este campo es obligatorio";
             } else {
-                mensajeErrorEfectivo.textContent = "";
+                efectivoInput.setCustomValidity("")
+                mensajeErrorEfectivo.innerHTML = "";
             }
         });
     </script>
 
     <script>
-        document.getElementById("cc-number").addEventListener("input", function() {
-        // Obtén el valor del campo de entrada
+        document.getElementById("cc-number").addEventListener("input", function () {
+            // Obtén el valor del campo de entrada
+            const ccNumberInput = this;
             const ccNumber = this.value.trim();
 
             // Verifica si el valor ingresado es un número
             if (!/^[0-9]*$/.test(ccNumber)) {
                 // Muestra un mensaje de error si no es un número
-                document.getElementById("mensajeErrorCc-number").textContent = "Por favor, ingresa solo números.";
+                ccNumberInput.setCustomValidity("Por favor, ingresa solo números.");
+                document.getElementById("mensajeErrorCc-number").classList.add("d-block")
+                document.getElementById("mensajeErrorCc-number").innerHTML = "Por favor, ingresa solo números.";
             } else if (ccNumber.length !== 16 || !ccNumber.startsWith("4")) {
                 // Verifica si el número de tarjeta no cumple con los criterios
-                document.getElementById("mensajeErrorCc-number").textContent = "El número de tarjeta no es VISA. Debe comenzar con 4 y tener 16 dígitos.";
+                ccNumberInput.setCustomValidity("El número de tarjeta no es VISA. Debe comenzar con 4 y tener 16 dígitos.");
+                document.getElementById("mensajeErrorCc-number").classList.add("d-block")
+                document.getElementById("mensajeErrorCc-number").innerHTML = "El número de tarjeta no es VISA. Debe comenzar con 4 y tener 16 dígitos.";
             } else {
                 // El número de tarjeta es válido
-                document.getElementById("mensajeErrorCc-number").textContent = "";
+                document.getElementById("mensajeErrorCc-number").classList.remove("d-block")
+                document.getElementById("mensajeErrorCc-number").innerHTML = "";
+            }
+        });
+
+        document.getElementById("cc-cvv").addEventListener("input", function () {
+            // Obtén el valor del campo de entrada
+            const cvvInput = this;
+            const cvvValue = this.value.trim();
+
+            if (cvvValue.length < 3) {
+                // Verifica si el número de tarjeta no cumple con los criterios
+                cvvInput.setCustomValidity("El codigo de seguridad no puede ser inferior a tres digitos");
+                document.getElementById("mensajeErrorCc-cvv").classList.add("d-block")
+                document.getElementById("mensajeErrorCc-cvv").innerHTML = "El codigo de seguridad no puede ser inferior a tres digitos";
+            } else {
+                // El número de tarjeta es válido
+                cvvInput.setCustomValidity("");
+                document.getElementById("mensajeErrorCc-cvv").classList.remove("d-block")
+                document.getElementById("mensajeErrorCc-cvv").innerHTML = "";
             }
         });
     </script>
@@ -554,6 +603,21 @@
         const payWithDiv = document.getElementById("payWithDiv")
         const paymentDetails = document.getElementById("paymentDetails")
 
+        const txtEfectivo = document.getElementById('efectivo');
+        const txtNombre = document.getElementById('cc-name');
+        const tarjeta = document.getElementById('cc-number');
+        const cvv = document.getElementById('cc-cvv');
+        const cbMes = document.getElementsByName('mes-venc')[0];
+        const cbAño = document.getElementsByName('año-venc')[0];
+
+        const mErorEfectivo = document.getElementById('mensajeErrorEfectivo');
+        const mErrorNombre = document.getElementById('m-error-cc-name');
+        const mErrorTarjeta = document.getElementById('mensajeErrorCc-number');
+        const mErrorCvv = document.getElementById('mensajeErrorCc-cvv');
+        const mErrorMes = document.getElementById('m-error-mes-venc');
+        const mErrorAño = document.getElementById('m-error-año-venc');
+
+
         // Agregar un manejador de eventos para la casilla de verificación
 
         creditRadio.addEventListener("change", function () {
@@ -563,7 +627,7 @@
                 paymentDetails.style.display = "block"; // Mostrar el div pago con tarjeta
             }
         });
-        cashRadio.addEventListener("change", function() {
+        cashRadio.addEventListener("change", function () {
             if (cashRadio.checked) {
                 paymentDetails.style.display = "none"; // Oculta el div pago con tarjeta
                 payWithDiv.style.display = "block"; // Mostrar el div pago con efectivo
@@ -585,43 +649,43 @@
 
             realizarPedidoBtn.addEventListener('click', function (event) {
 
-            const direcion = document.getElementById('address');
-            const provincia = document.getElementById('country');
-            const ciudad = document.getElementById('state');
-            const cpa = document.getElementById('zip');
-            const radioEfectivo = document.getElementById('cash');
-            const radioTarjeta = document.getElementById('credit');
-            const txtEfectivo = document.getElementById('efectivo');
-            const txtNombre = document.getElementById('cc-name');
-            const tarjeta = document.getElementById('cc-number');
-            const cvv = document.getElementById('cc-cvv');
-            const cbMes = document.getElementsByName('mes-venc')[0];
-            const cbAño = document.getElementsByName('año-venc')[0];
-            const radioInmediato = document.getElementById('antesPosible');
-            const radioProgramada = document.getElementById('programado');
-            const fechaHoraInput = document.getElementById("fechaHora");
-            const total = document.getElementById('total');
-            const totalNumerico = parseFloat(total.textContent.replace('$', ''));
+                const direcion = document.getElementById('address');
+                const provincia = document.getElementById('country');
+                const ciudad = document.getElementById('state');
+                const cpa = document.getElementById('zip');
+                const radioEfectivo = document.getElementById('cash');
+                const radioTarjeta = document.getElementById('credit');
+                const txtEfectivo = document.getElementById('efectivo');
+                const txtNombre = document.getElementById('cc-name');
+                const tarjeta = document.getElementById('cc-number');
+                const cvv = document.getElementById('cc-cvv');
+                const cbMes = document.getElementsByName('mes-venc')[0];
+                const cbAño = document.getElementsByName('año-venc')[0];
+                const radioInmediato = document.getElementById('antesPosible');
+                const radioProgramada = document.getElementById('programado');
+                const fechaHoraInput = document.getElementById("fechaHora");
+                const total = document.getElementById('total');
+                const totalNumerico = parseFloat(total.textContent.replace('$', ''));
 
 
-            const mes_venc = cbMes.options[cbMes.selectedIndex].text;
-            const año_venc = cbAño.options[cbAño.selectedIndex].text;
-            const fechaActual = new Date()
-            const añoActual = fechaActual.getFullYear();
-            const mesActual = (String(fechaActual.getMonth() + 1).padStart(2, '0'));
-            const añoMesActual = new Date(añoActual+"-"+mesActual);
-            const añoMesVenc = new Date(año_venc+"-"+mes_venc)
-            
-            const fechaHoraSeleccionada = new Date(fechaHoraInput.value)
-            const fechaHoraMin = new Date();
-            fechaHoraMin.setHours(fechaHoraMin.getHours() + 1);
-            fechaHoraMin.setMinutes(fechaHoraMin.getMinutes() - 1);
-            const exprecionLogica = /^[0-9]+$/;
-            const fechaHoraMax = new Date();
-            fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
+                const mes_venc = cbMes.options[cbMes.selectedIndex].text;
+                const año_venc = cbAño.options[cbAño.selectedIndex].text;
+                const fechaActual = new Date()
+                const añoActual = fechaActual.getFullYear();
+                const mesActual = (String(fechaActual.getMonth() + 1).padStart(2, '0'));
+                const añoMesActual = new Date(añoActual + "-" + mesActual);
+                const añoMesVenc = new Date(año_venc + "-" + mes_venc)
+
+                const fechaHoraSeleccionada = new Date(fechaHoraInput.value)
+                const fechaHoraMin = new Date();
+                fechaHoraMin.setHours(fechaHoraMin.getHours() + 1);
+                fechaHoraMin.setMinutes(fechaHoraMin.getMinutes() - 1);
+                const exprecionLogica = /^[0-9]+$/;
+                const fechaHoraMax = new Date();
+                fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
 
 
-            const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
+                const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
 
                 if (elementosCarrito.length === 0) {
                     // Mostrar el mensaje de error
@@ -629,31 +693,34 @@
                     mensajeError.classList.remove('d-none');
                     event.preventDefault(); // Evitar que el formulario se envíe si no hay elementos en el carrito
 
-                } else if(direcion.value == "") {
-                    
-                } else if(provincia.value === ""){
+                } else if (direcion.value == "") {
 
-                } else if(ciudad.value === ""){
+                } else if (provincia.value === "") {
 
-                } else if(cpa.value == "" || !exprecionLogica.test(cpa.value)){
-                    
-                } else if(radioEfectivo.checked && (!exprecionLogica.test(txtEfectivo.value) || txtEfectivo.value.trim() < 0 || txtEfectivo.value.trim() > 50000)){
+                } else if (ciudad.value === "") {
 
-                } else if(radioTarjeta.checked && txtNombre.value == ""){ 
-                
-                } else if(radioTarjeta.checked && (tarjeta.value == "" ||!exprecionLogica.test(tarjeta.value) || tarjeta.value.length !== 16 || !tarjeta.value.startsWith("4"))){ 
-                
-                } else if(radioTarjeta.checked && (cvv.value == "" ||!exprecionLogica.test(cvv.value) || cvv.value.length !== 3 )){
+                } else if (cpa.value == "" || !exprecionLogica.test(cpa.value)) {
 
-                } else if(radioTarjeta.checked && (cbMes.value === "" || cbAño.value === "" || añoMesVenc < añoMesActual)){
+                } else if (radioEfectivo.checked && (!exprecionLogica.test(txtEfectivo.value) || txtEfectivo.value.trim() < 0 || txtEfectivo.value.trim() > 50000)) {
 
-                } else if(radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax)){     
- 
-                } else if (totalNumerico > parseFloat(txtEfectivo.value)){
+                } else if (radioTarjeta.checked && txtNombre.value == "") {
+
+                } else if (radioTarjeta.checked && (tarjeta.value == "" || !exprecionLogica.test(tarjeta.value) || tarjeta.value.length !== 16 || !tarjeta.value.startsWith("4"))) {
+
+                } else if (radioTarjeta.checked && (cvv.value == "" || !exprecionLogica.test(cvv.value) || cvv.value.length !== 3)) {
+
+                } else if (radioTarjeta.checked && (cbMes.value === "" || cbAño.value === "" || añoMesVenc < añoMesActual)) {
+                    // Mostrar el mensaje de error
+                    mensajeError.textContent = 'No ingreso una fecha de vencimineto de tarjeta de Devito/Credito o bien a expirado. Por favor controle dicho campo';
+                    mensajeError.classList.remove('d-none');
+                    event.preventDefault();
+                } else if (radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax)) {
+
+                } else if (totalNumerico > parseFloat(txtEfectivo.value)) {
                     // Mostrar el mensaje de error
                     mensajeError.textContent = 'El monto ingresado es inferior al monto total';
                     mensajeError.classList.remove('d-none');
-                    event.preventDefault();              
+                    event.preventDefault();
                 } else {
                     // Ocultar el mensaje de error si hay elementos en el carrito
                     mensajeError.classList.add('d-none');
@@ -668,96 +735,98 @@
         });
     </script>
 
-<script>
+    <script>
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Obtener referencias a los elementos
-    
-    const fechaHoraInput = document.getElementById("fechaHora");
-    const errorMensaje = document.getElementById("error-mensaje-fecha");
-    const divFechaHora = document.getElementById("div-fecha-programada");
-    const cbProgramado = document.getElementById("programado");
-    const cbAntesPosible = document.getElementById("antesPosible");
-    const fechaHoraSeleccionada = new Date(fechaHoraInput.value);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Obtener referencias a los elementos
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Funciones
-
-    //Funcion para validar que no se este ingresando una fecha inferior o superior a la devida
-    function validarFechaYHora() {
-
-        // Obtener la fecha y hora seleccionada por el usuario
+        const fechaHoraInput = document.getElementById("fechaHora");
+        const errorMensaje = document.getElementById("error-mensaje-fecha");
+        const divFechaHora = document.getElementById("div-fecha-programada");
+        const cbProgramado = document.getElementById("programado");
+        const cbAntesPosible = document.getElementById("antesPosible");
         const fechaHoraSeleccionada = new Date(fechaHoraInput.value);
 
-        const fechaHoraMin = new Date();
-        fechaHoraMin.setHours(fechaHoraMin.getHours() + 1)
-        fechaHoraMin.setMinutes(fechaHoraMin.getMinutes() - 1)
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Funciones
 
-        const fechaHoraMax = new Date();
-        fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
+        //Funcion para validar que no se este ingresando una fecha inferior o superior a la devida
+        function validarFechaYHora() {
 
-        if (fechaHoraSeleccionada < fechaHoraMin) 
-        {
-            errorMensaje.innerHTML = "La fecha programada de entrega no puede inferior a 1 hora posteriores a la actual";
-            fechaHoraInput.classList.add('is-invalid')
-            return true
-        } else if (fechaHoraSeleccionada > fechaHoraMax) 
-        {
-            errorMensaje.innerHTML = "La fecha programada de entrega no puede superar a 7 dias posteriores a la actual";
-            fechaHoraInput.classList.add('is-invalid')
-            return true
-        } else 
-        {
-            errorMensaje.innerHTML = "";
-            fechaHoraInput.classList.remove('is-invalid')
-            return false
+            // Obtener la fecha y hora seleccionada por el usuario
+            const fechaHoraSeleccionada = new Date(fechaHoraInput.value);
+
+            const fechaHoraMin = new Date();
+            fechaHoraMin.setHours(fechaHoraMin.getHours() + 1)
+            fechaHoraMin.setMinutes(fechaHoraMin.getMinutes() - 1)
+
+            const fechaHoraMax = new Date();
+            fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
+
+            if (fechaHoraSeleccionada < fechaHoraMin) {
+                errorMensaje.classList.add("d-block")
+                errorMensaje.innerHTML = "La fecha programada de entrega no puede inferior a 1 hora posteriores a la actual";
+                fechaHoraInput.setCustomValidity("La fecha programada de entrega no puede inferior a 1 hora posteriores a la actual")
+                fechaHoraInput.classList.add('is-invalid')
+
+            } else if (fechaHoraSeleccionada > fechaHoraMax) {
+                errorMensaje.classList.add("d-block")
+                errorMensaje.innerHTML = "La fecha programada de entrega no puede superar a 7 dias posteriores a la actual";
+                fechaHoraInput.setCustomValidity("La fecha programada de entrega no puede superar a 7 dias posteriores a la actual")
+                fechaHoraInput.classList.add('is-invalid')
+                return true
+            } else {
+                errorMensaje.classList.remove("d-block")
+                errorMensaje.innerHTML = "";
+                fechaHoraInput.setCustomValidity("")
+                fechaHoraInput.classList.remove('is-invalid')
+            }
         }
-    }
 
-    function asignarMinMaxFechas() {
-        const fechaMin = new Date()
-        const fechaMax = new Date()
-        fechaMin.setHours(fechaMin.getHours());
-        fechaMax.setDate(fechaMax.getDate() + 7);
+        function asignarMinMaxFechas() {
+            const fechaMin = new Date()
+            const fechaMax = new Date()
+            fechaMin.setHours(fechaMin.getHours());
+            fechaMax.setDate(fechaMax.getDate() + 7);
 
-        console.log(fechaMin.toISOString())
-        console.log(fechaMax.toISOString())
-        fechaHoraInput.setAttribute("min", fechaMin.toISOString().slice(0, 16))
-        fechaHoraInput.setAttribute("max", fechaMax.toISOString().slice(0, 16))
-    }
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    // Eventos
-
-    //Asignar min y max al Detetime-local
-    //cbProgramado.addEventListener("change", asignarMinMaxFechas)
-
-    // Mostrar y ocultar campo de entrega programada
-    cbProgramado.addEventListener("change", function () {
-        if (cbProgramado.checked) {
-            fechaHoraInput.value = ""
-            errorMensaje.innerHTML = "";
-            fechaHoraInput.classList.remove('is-invalid')
-            divFechaHora.style.display = "block";
+            console.log(fechaMin.toISOString())
+            console.log(fechaMax.toISOString())
+            fechaHoraInput.setAttribute("min", fechaMin.toISOString().slice(0, 16))
+            fechaHoraInput.setAttribute("max", fechaMax.toISOString().slice(0, 16))
         }
-    });
 
-    cbAntesPosible.addEventListener("change", function () {
-        if (cbAntesPosible.checked) {
-            divFechaHora.style.display = "none"; // Oculta el div
-        }
-    });
 
-    // Validacion de fechas
-    fechaHoraInput.addEventListener("input", validarFechaYHora);
 
-</script>
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        // Eventos
+
+        //Asignar min y max al Detetime-local
+        //cbProgramado.addEventListener("change", asignarMinMaxFechas)
+
+        // Mostrar y ocultar campo de entrega programada
+        cbProgramado.addEventListener("change", function () {
+            if (cbProgramado.checked) {
+                fechaHoraInput.value = "";
+                fechaHoraInput.setCustomValidity("")
+                errorMensaje.innerHTML = "";
+                fechaHoraInput.classList.remove('is-invalid')
+                divFechaHora.style.display = "block";
+            }
+        });
+
+        cbAntesPosible.addEventListener("change", function () {
+            if (cbAntesPosible.checked) {
+                divFechaHora.style.display = "none"; // Oculta el div
+            }
+        });
+
+        // Validacion de fechas
+        fechaHoraInput.addEventListener("input", validarFechaYHora);
+
+    </script>
 
 
 
 </body>
 
 </html>
-
