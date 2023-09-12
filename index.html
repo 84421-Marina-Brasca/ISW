@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <script src="./notiflix-notify-aio-3.2.6.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -695,37 +696,41 @@
                 const elementosCarrito = carritoLista.querySelectorAll('li.list-group-item:not(.bg-light)');
 
                 if (elementosCarrito.length === 0 || totalNumerico === 0) {
+                    
                     // Mostrar el mensaje de error
-                    mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
+                    Notiflix.Notify.failure("Agrega al menos un elemento al carrito antes de realizar el pedido", {timeout:5000});
+                    //mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
                     mensajeError.classList.remove('d-none');
                     event.preventDefault(); // Evitar que el formulario se envíe si no hay elementos en el carrito
 
                 } else if (direcion.value == "") {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (provincia.value === "") {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (ciudad.value === "") {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (cpa.value == "" || !exprecionLogica.test(cpa.value)) {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (radioEfectivo.checked && (!exprecionLogica.test(txtEfectivo.value) || txtEfectivo.value.trim() < 0 || txtEfectivo.value.trim() > 50000)) {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (radioTarjeta.checked && txtNombre.value == "") {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (radioTarjeta.checked && (tarjeta.value == "" || !exprecionLogica.test(tarjeta.value) || tarjeta.value.length !== 16 || !tarjeta.value.startsWith("4"))) {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (radioTarjeta.checked && (cvv.value == "" || !exprecionLogica.test(cvv.value) || cvv.value.length !== 3)) {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (radioTarjeta.checked && (cbMes.value === "" || cbAño.value === "" || añoMesVenc < añoMesActual)) {
                     // Mostrar el mensaje de error
-                    mensajeError.textContent = 'No ingreso una fecha de vencimineto de tarjeta de Devito/Credito o bien a expirado. Por favor controle dicho campo';
+                    Notiflix.Notify.failure("No ingreso una fecha de vencimineto o bien la tarjeta a expirado. ");
+                    //mensajeError.textContent = 'No ingreso una fecha de vencimineto de tarjeta de Devito/Credito o bien a expirado. Por favor controle dicho campo';
                     mensajeError.classList.remove('d-none');
                     event.preventDefault();
                 } else if (radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax)) {
-
+                    Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (totalNumerico > parseFloat(txtEfectivo.value)) {
                     // Mostrar el mensaje de error
-                    mensajeError.textContent = 'El monto ingresado es inferior al monto total';
+                    Notiflix.Notify.failure("El monto ingresado es inferior al monto total");
+                    //mensajeError.textContent = 'El monto ingresado es inferior al monto total';
                     mensajeError.classList.remove('d-none');
                     event.preventDefault();
                 } else {
@@ -734,9 +739,11 @@
 
                     // Mostrar un mensaje de éxito
                     const mensajeExito = document.createElement('div');
-                    mensajeExito.classList.add('alert', 'alert-success', 'mt-3');
-                    mensajeExito.textContent = 'Pedido realizado correctamente.';
+                    //mensajeExito.classList.add('alert', 'alert-success', 'mt-3');
+                    Notiflix.Notify.success("Pedido realizado correctamente.",{timeout:5000});
+                    //mensajeExito.textContent = 'Pedido realizado correctamente.';
                     carritoLista.parentElement.appendChild(mensajeExito);
+
                 }
             });
         });
