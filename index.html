@@ -760,7 +760,7 @@
                     //mensajeError.textContent = 'No ingreso una fecha de vencimineto de tarjeta de Devito/Credito o bien a expirado. Por favor controle dicho campo';
                     //mensajeError.classList.remove('d-none');
                     event.preventDefault();
-                } else if (radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax)) {
+                } else if (radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax || (fechaHoraSeleccionada.getHours() >= 0 && fechaHoraSeleccionada.getHours() < 8))) {
                     Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
                 } else if (totalNumerico > parseFloat(txtEfectivo.value)) {
                     // Mostrar el mensaje de error
@@ -826,10 +826,10 @@
                 fechaHoraInput.setCustomValidity("La fecha programada de entrega no puede superar a 7 dias posteriores a la actual")
                 fechaHoraInput.classList.add('is-invalid')
                 
-            } else if (fechaHoraSeleccionada.getHours() >= 0 || fechaHoraSeleccionada.getHours() < 8) {
+            } else if (fechaHoraSeleccionada.getHours() >= 0 && fechaHoraSeleccionada.getHours() < 8) {
                 errorMensaje.classList.add("d-block")
-                errorMensaje.innerHTML = "Las horas de trabajo son de 00 a 23:59 Hs";
-                fechaHoraInput.setCustomValidity("Las horas de trabajo son de 00 a 23:59")
+                errorMensaje.innerHTML = "Las horas de trabajo son de 08 a 23:59 Hs";
+                fechaHoraInput.setCustomValidity("Las horas de trabajo son de 08 a 23:59")
                 fechaHoraInput.classList.add('is-invalid')
             } else {
                 errorMensaje.classList.remove("d-block")
