@@ -47,8 +47,9 @@
 
         <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
+
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Tu Carrito</span>
+                    Tu Carrito
                     <span class="badge badge-secondary badge-pill" id="cantidadProductos">3</span>
                 </h4>
                 <ul class="list-group mb-3" id="carrito-lista">
@@ -84,13 +85,16 @@
                         <small id="codigoDescuento">-$0</small>
                         <!--- VER PORQUE NO TOMA EL CSS DE LOS BOTONES XS -->
                     </li>
-
-
                 </ul>
+
                 <div class="total">
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total</span>
                         <span  id="total">$5790</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Vuelto</span>
+                        <span  id="vuelto">---</span>
                     </li>
                 </div>
 
@@ -102,6 +106,15 @@
                         </div>
                     </div>
                 </form>
+                <br>
+                <div>
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        Mapa
+                    </h4>
+                    <div>
+                        <img class="mb-3 d-block mx-auto img-fluid " src="./imagenes/map.png">
+                    </div>
+                </div>
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Datos de Envio</h4>
@@ -468,20 +481,42 @@
     <script>
         var efectivoInput = document.getElementById("efectivo");
         var mensajeErrorEfectivo = document.getElementById("mensajeErrorEfectivo");
+        var importeTotalNumerico = parseFloat(total.textContent.replace('$', ''));
+        var vuelto = document.getElementById("vuelto")
 
         efectivoInput.addEventListener("input", function () {
             var valorEfectivo = this.value.trim(); // Elimina espacios en blanco
             var esNumero = /^[0-9]+$/.test(valorEfectivo); // Verifica si es un número
 
             if (!esNumero || valorEfectivo < 0 || valorEfectivo > 50000) {
+                mensajeErrorEfectivo.classList.add("d-block")
                 efectivoInput.setCustomValidity("Ingrese un numero mayor a 0 y menor o igual a 50.000")
                 mensajeErrorEfectivo.innerHTML = "Ingrese un numero mayor a 0 y menor o igual a 50.000";
+                vuelto.textContent = '---';
             } else if (efectivoInput.value == "") {
+                mensajeErrorEfectivo.classList.add("d-block")
                 efectivoInput.setCustomValidity("Este campo es obligatorio")
                 mensajeErrorEfectivo.innerHTML = "Este campo es obligatorio";
+                vuelto.textContent = '---';
+            } else if (efectivoInput.value.trim() < importeTotalNumerico) {
+                mensajeErrorEfectivo.classList.add("d-block")
+                efectivoInput.setCustomValidity("El valor ingresado es inferior al importe a abonar")
+                mensajeErrorEfectivo.innerHTML = "El valor ingresado es inferior al importe a abonar";
+                vuelto.textContent = '---';
             } else {
+                mensajeErrorEfectivo.classList.remove("d-block")
                 efectivoInput.setCustomValidity("")
                 mensajeErrorEfectivo.innerHTML = "";
+
+                vueltoNumerico = efectivoInput.value.trim() - importeTotalNumerico;
+
+                if (vueltoNumerico == 0 || vueltoNumerico < 0){
+                vuelto.textContent = '$' + 0;
+                }
+                else{
+                    vuelto.textContent = '$' + vueltoNumerico;
+                }
+
             }
         });
     </script>
@@ -649,10 +684,10 @@
             const realizarPedidoBtn = document.getElementById('realizarPedido');
             const carritoLista = document.getElementById('carrito-lista');
 
-            const mensajeError = document.createElement('div');
-            mensajeError.classList.add('alert', 'alert-danger', 'mt-3', 'd-none');
-            mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
-            carritoLista.parentElement.appendChild(mensajeError);
+            //const mensajeError = document.createElement('div');
+            //mensajeError.classList.add('alert', 'alert-danger', 'mt-3', 'd-none');
+            //mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
+            //carritoLista.parentElement.appendChild(mensajeError);
 
 
             realizarPedidoBtn.addEventListener('click', function (event) {
@@ -700,7 +735,7 @@
                     // Mostrar el mensaje de error
                     Notiflix.Notify.failure("Agrega al menos un elemento al carrito antes de realizar el pedido", {timeout:5000});
                     //mensajeError.textContent = 'Agrega al menos un elemento al carrito antes de realizar el pedido.';
-                    mensajeError.classList.remove('d-none');
+                    //mensajeError.classList.remove('d-none');
                     event.preventDefault(); // Evitar que el formulario se envíe si no hay elementos en el carrito
 
                 } else if (direcion.value == "") {
@@ -723,7 +758,7 @@
                     // Mostrar el mensaje de error
                     Notiflix.Notify.failure("No ingreso una fecha de vencimineto o bien la tarjeta a expirado. ");
                     //mensajeError.textContent = 'No ingreso una fecha de vencimineto de tarjeta de Devito/Credito o bien a expirado. Por favor controle dicho campo';
-                    mensajeError.classList.remove('d-none');
+                    //mensajeError.classList.remove('d-none');
                     event.preventDefault();
                 } else if (radioProgramada.checked && (fechaHoraInput.value == "" || fechaHoraSeleccionada < fechaHoraMin || fechaHoraSeleccionada > fechaHoraMax)) {
                     Notiflix.Notify.failure("Algunos de los campos no fueron cargados corectamnte. Por favor revise los datos ingresados");
@@ -731,11 +766,11 @@
                     // Mostrar el mensaje de error
                     Notiflix.Notify.failure("El monto ingresado es inferior al monto total");
                     //mensajeError.textContent = 'El monto ingresado es inferior al monto total';
-                    mensajeError.classList.remove('d-none');
+                    //mensajeError.classList.remove('d-none');
                     event.preventDefault();
                 } else {
                     // Ocultar el mensaje de error si hay elementos en el carrito
-                    mensajeError.classList.add('d-none');
+                    //mensajeError.classList.add('d-none');
 
                     // Mostrar un mensaje de éxito
                     const mensajeExito = document.createElement('div');
@@ -777,6 +812,8 @@
             const fechaHoraMax = new Date();
             fechaHoraMax.setDate(fechaHoraMax.getDate() + 7)
 
+            console.log(fechaHoraSeleccionada.getHours())
+
             if (fechaHoraSeleccionada < fechaHoraMin) {
                 errorMensaje.classList.add("d-block")
                 errorMensaje.innerHTML = "La fecha programada de entrega no puede inferior a 1 hora posteriores a la actual";
@@ -788,7 +825,12 @@
                 errorMensaje.innerHTML = "La fecha programada de entrega no puede superar a 7 dias posteriores a la actual";
                 fechaHoraInput.setCustomValidity("La fecha programada de entrega no puede superar a 7 dias posteriores a la actual")
                 fechaHoraInput.classList.add('is-invalid')
-                return true
+                
+            } else if (fechaHoraSeleccionada.getHours() >= 0 || fechaHoraSeleccionada.getHours() < 8) {
+                errorMensaje.classList.add("d-block")
+                errorMensaje.innerHTML = "Las horas de trabajo son de 00 a 23:59 Hs";
+                fechaHoraInput.setCustomValidity("Las horas de trabajo son de 00 a 23:59")
+                fechaHoraInput.classList.add('is-invalid')
             } else {
                 errorMensaje.classList.remove("d-block")
                 errorMensaje.innerHTML = "";
