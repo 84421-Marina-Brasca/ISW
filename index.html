@@ -481,12 +481,13 @@
     <script>
         var efectivoInput = document.getElementById("efectivo");
         var mensajeErrorEfectivo = document.getElementById("mensajeErrorEfectivo");
-        var importeTotalNumerico = parseFloat(total.textContent.replace('$', ''));
-        var vuelto = document.getElementById("vuelto")
+
 
         efectivoInput.addEventListener("input", function () {
             var valorEfectivo = this.value.trim(); // Elimina espacios en blanco
             var esNumero = /^[0-9]+$/.test(valorEfectivo); // Verifica si es un número
+            var importeTotalNumerico = parseFloat(total.textContent.replace('$', ''));
+            var vuelto = document.getElementById("vuelto")
 
             if (!esNumero || valorEfectivo < 0 || valorEfectivo > 50000) {
                 mensajeErrorEfectivo.classList.add("d-block")
