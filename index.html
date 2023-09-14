@@ -112,8 +112,8 @@
                         Mapa
                     </h4>
                     <div>
-                        <img class="mb-3 d-block mx-auto img-fluid " src="./imagenes/map.png">
-                    </div>
+                        <iframe class="mb-3 d-block mx-auto" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108977.23899428132!2d-64.27661363023637!3d-31.3992803200505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432985f478f5b69%3A0xb0a24f9a5366b092!2zQ8OzcmRvYmE!5e0!3m2!1ses!2sar!4v1694722697724!5m2!1ses!2sar" width=400 height=350 style="border:2;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
                 </div>
             </div>
             <div class="col-md-8 order-md-1">
@@ -600,13 +600,19 @@
                     const nuevoTotalNumerico = totalNumericoActual - importeNumerico;
 
                     // Actualiza el contenido del elemento "total" con el nuevo total
-                    totalSpan.textContent = '$' + nuevoTotalNumerico.toFixed(2);
+                    if(nuevoTotalNumerico < 0){
+                        
+                        totalSpan.textContent = '$0';
+                    }
+                    else{
+                        totalSpan.textContent = `$${nuevoTotalNumerico}`;
+                    }
 
                     elemento.remove();
                     cantidadProductos--;
                     cantidadProductosSpan.textContent = cantidadProductos;
-                    actualizarCantidadProductos(); 
                     actualizarTotal(); 
+                    
                 });
             });
         });
@@ -629,7 +635,14 @@
                     // Aplica el descuento
                     const descuento = 500;
                     codigoDescuento.textContent = `-$${descuento}`;
-                    total.textContent = `$${parseFloat(total.textContent.replace('$', '')) - descuento}`;
+                    if(parseFloat(total.textContent.replace('$', '')) - descuento < 0){
+                        
+                        total.textContent = "$0";
+                    }
+                    else{
+                        total.textContent = `$${parseFloat(total.textContent.replace('$', '')) - descuento}`;
+                    }
+                    
                 }
 
                 // Limpia el campo de entrada
