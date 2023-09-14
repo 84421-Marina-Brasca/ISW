@@ -600,13 +600,19 @@
                     const nuevoTotalNumerico = totalNumericoActual - importeNumerico;
 
                     // Actualiza el contenido del elemento "total" con el nuevo total
-                    totalSpan.textContent = '$' + nuevoTotalNumerico.toFixed(2);
+                    if(nuevoTotalNumerico < 0){
+                        
+                        totalSpan.textContent = '$0';
+                    }
+                    else{
+                        totalSpan.textContent = `$${nuevoTotalNumerico}`;
+                    }
 
                     elemento.remove();
                     cantidadProductos--;
                     cantidadProductosSpan.textContent = cantidadProductos;
-                    actualizarCantidadProductos(); 
                     actualizarTotal(); 
+                    
                 });
             });
         });
@@ -629,7 +635,14 @@
                     // Aplica el descuento
                     const descuento = 500;
                     codigoDescuento.textContent = `-$${descuento}`;
-                    total.textContent = `$${parseFloat(total.textContent.replace('$', '')) - descuento}`;
+                    if(parseFloat(total.textContent.replace('$', '')) - descuento < 0){
+                        
+                        total.textContent = "$0";
+                    }
+                    else{
+                        total.textContent = `$${parseFloat(total.textContent.replace('$', '')) - descuento}`;
+                    }
+                    
                 }
 
                 // Limpia el campo de entrada
