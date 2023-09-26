@@ -1,7 +1,7 @@
 # ISW
 ## PRÁCTICO 6 - REQUERIMIENTOS ÁGILES - Implementación de user stories 
 
-## User stories:
+## User stories :
 ### Realizar Pedido a un Comercio adherido
 Como Solicitante quiero realizar un Pedido a un comercio adherido para recibir los Productos en mi domicilio
 ### Criterios de Aceptación
